@@ -19,6 +19,8 @@
  */
 package com.peasenet.mods.tracer
 
+import com.peasenet.main.Settings
+import com.peasenet.config.TracerConfig
 import com.peasenet.main.GavinsMod
 import com.peasenet.settings.SettingBuilder
 import com.peasenet.util.RenderUtils
@@ -39,10 +41,10 @@ class ModEntityItemTracer : TracerMod(
     init {
         val colorSetting = SettingBuilder()
             .setTitle("gavinsmod.settings.tracer.item.color")
-            .setColor(tracerConfig.itemColor)
+            .setColor(config.itemColor)
             .buildColorSetting()
-        colorSetting.setCallback { tracerConfig.itemColor = colorSetting.color }
-        colorSetting.color = GavinsMod.tracerConfig.itemColor
+        colorSetting.setCallback { config.itemColor = colorSetting.color }
+        colorSetting.color = config.itemColor
         addSetting(colorSetting)
     }
 
@@ -54,12 +56,18 @@ class ModEntityItemTracer : TracerMod(
             er.buffer!!,
             er.playerPos!!,
             er.center!!,
-            tracerConfig.itemColor,
-            tracerConfig.alpha
+            config.itemColor,
+            config.alpha
         )
     }
 
     override fun onRenderBlockEntity(er: BlockEntityRender) {
 
+    }
+    companion object {
+        private val config: TracerConfig
+        get() {
+            return Settings.getConfig<TracerConfig>("tracer")
+        }
     }
 }
